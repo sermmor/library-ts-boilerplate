@@ -1,1 +1,1 @@
-export { myFunction } from './date-in-period';
+export { validateDateInPeriod } from './date-in-period';

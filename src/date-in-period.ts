@@ -167,5 +167,3 @@ export const validateDateInPeriod = (dateInput: string, dateBeginning: string, d
     return result;
 
 }
-
-export const myFunction = (input: any): boolean => true;
