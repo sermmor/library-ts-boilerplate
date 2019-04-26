@@ -1,1 +1,1 @@
-export { myFunction } from './sample';
+export { myFunction } from './date-in-period';
