@@ -1,7 +1,7 @@
 {
-  "name": "library-ts-boilerplate",
+  "name": "validator-date-in-period",
   "version": "1.0.0",
-  "description": "NPM Library boilerplate with TS",
+  "description": "Microlibrary for validate 1 date between 2 dates (using lc-form-validation library)",
   "keywords": [
     "lc-form-validation",
     "form",
@@ -10,14 +10,14 @@
     "react",
     "component"
   ],
-  "homepage": "https://github.com/Lemoncode/lc-validator-dni#readme",
+  "homepage": "https://github.com/sermmor/library-validator-date-in-period",
   "bugs": {
-    "url": "https://github.com/Lemoncode/lc-validator-dni/issues"
+    "url": "https://github.com/sermmor/library-validator-date-in-period/issues"
   },
   "license": "MIT",
-  "author": "Lemoncode",
+  "author": "Sergio martín",
   "contributors": [
-    "Javier Calzado <javi.calzado@lemoncode.net> (https://github.com/fjcalzado)"
+    "Sergio Martín <sermmor@outlook.com> (https://github.com/sermmor)"
   ],
   "files": [
     "dist",
@@ -35,7 +35,7 @@
   "jsnext:main": "es/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Lemoncode/lc-validator-dni.git"
+    "url": "git+https://github.com/sermmor/library-validator-date-in-period.git"
   },
   "scripts": {
     "clean": "rimraf build",
