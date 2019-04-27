@@ -26,7 +26,6 @@ describe('validateDateInPeriod', () => {
 
     // Assert.
     expectValidationResultToBeFalsy(result);
-
   });
 
   it('Check null date in period', () => {
@@ -39,7 +38,6 @@ describe('validateDateInPeriod', () => {
 
     // Assert.
     expectValidationResultToBeFalsy(result);
-
   });
 
   it('Check date in period with same begin and ending', () => {
@@ -185,5 +183,4 @@ describe('validateDateInPeriod', () => {
     // Assert.
     expectValidationResultToBeTruthy(result);
   });
-
 });
