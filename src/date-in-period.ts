@@ -106,7 +106,13 @@ const isMonthDayInPeriodYearEnding = ([monthInput, dayInput]: number[], [monthEn
 }
 
 const isAValidPeriod = ([yearBegin, monthBegin, dayBegin]: number[], [yearEnd, monthEnd, dayEnd]: number[]): boolean => {
-    return yearBegin < yearEnd || monthBegin < monthEnd || dayBegin < dayEnd;
+    if (yearBegin !== yearEnd) {
+        return yearBegin < yearEnd;
+    } else if (monthBegin !== monthEnd){
+        return monthBegin < monthEnd;
+    } else {
+        return dayBegin < dayEnd;
+    }
 }
 
 /**
