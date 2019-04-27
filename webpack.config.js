@@ -1,14 +1,16 @@
-var path = require('path');
+const path = require('path');
+const CompressionPlugin = require('compression-webpack-plugin');
 
 const capitalizeString = s => s.charAt(0).toUpperCase() + s.slice(1);
 
 module.exports = env => {
   const NODE_ENV = process.env.NODE_ENV;
   const mode = NODE_ENV || 'development';
+  const prod = mode === 'production';
   const packageName = process.env.npm_package_name;
   const packageNameCapital = packageName.split('-').map(capitalizeString).join('');
   const packageVersion = JSON.stringify(process.env.npm_package_version).replace(/"/g, '');
-  const filename = `${packageName}-${packageVersion}${mode === 'production' ? '.min' : ''}.js`;
+  const filename = `${packageName}-${packageVersion}${prod ? '.min' : ''}.js`;
 
   return {
     mode,
@@ -27,6 +29,7 @@ module.exports = env => {
       },
       libraryTarget: 'umd',
     },
+    externals: 'lc-form-validation',
     module: {
       rules: [
         {
@@ -36,5 +39,6 @@ module.exports = env => {
         },
       ],
     },
+    plugins: prod ? [new CompressionPlugin()] : [],
   };
 };
