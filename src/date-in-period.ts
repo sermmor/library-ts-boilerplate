@@ -1,31 +1,31 @@
-import {FieldValidationResult} from 'lc-form-validation';
+import { FieldValidationResult } from 'lc-form-validation';
 
 const invalidPeriodMessage: string = 'Invalid period';
 const invalidInputDateInPeriod: string = 'Invalid date between two dates';
 const separatorDateTypeLine: string = '-';
 const separatorDateTypeSlash: string = '/';
-const allMonths: string[] = ["january", "february", "march", "april", "may", "june", "july", "august", 
-    "september", "october", "november", "december"];
+const allMonths: string[] = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august',
+    'september', 'october', 'november', 'december'];
 
 const isAllNumbers = (listNumbers: string[]): boolean => {
-    for (let number of listNumbers) {
-        if (Number.isNaN(+number)) {
+    for (const numberStr of listNumbers) {
+        if (Number.isNaN(+numberStr)) {
             return false;
         }
     }
     return true;
-}
+};
 
 const parseMonthToNumber = (monthString: string) => allMonths.indexOf(monthString.toLowerCase()) + 1;
 
 const isStringMonthAndDayYearNumbers = (dateSplited: string[]): boolean => {
-    if (dateSplited.length !== 3) {    
+    if (dateSplited.length !== 3) {
         return false;
     }
     const [year, day]: number[] = [+dateSplited[0], +dateSplited[2]];
     const month: string = dateSplited[1];
     return !Number.isNaN(year) && allMonths.indexOf(month.toLowerCase()) !== -1 && !Number.isNaN(day);
-}
+};
 
 const isLeapYear = (year: number) => (year % 100 === 0) ? (year % 400 === 0) : (year % 4 === 0);
 
@@ -37,32 +37,33 @@ const getMaxDayOfTheMonth = (year: number, month: number): number => {
     } else {
         return 30;
     }
-}
+};
 
 const isValidDay = (year: number, month: number, day: number): boolean => {
     return 0 < day && day <= getMaxDayOfTheMonth(year, month);
-}
+};
 
 const isValidMonth = (month: number): boolean => {
     return 0 < month;
-}
+};
 
 /**
  * Split date to [Year, Month, Day].
  * @param stringDate string with format Year-Month-Day or Year/Month/Day.
  */
 const splitDate = (stringDate: string): number[] => {
-    const separatorDate: string = stringDate.includes(separatorDateTypeLine) ? separatorDateTypeLine : separatorDateTypeSlash;
+    const separatorDate: string = stringDate.includes(separatorDateTypeLine) ?
+        separatorDateTypeLine : separatorDateTypeSlash;
     const dateSplited: string[] = stringDate.split(separatorDate);
 
-    if (dateSplited.length !== 3) {    
+    if (dateSplited.length !== 3) {
         return [];
     }
-    
+
     if (isStringMonthAndDayYearNumbers(dateSplited)) {
         dateSplited[1] = parseMonthToNumber(dateSplited[1]).toString();
     }
-    
+
     if (isAllNumbers(dateSplited)) {
         const [year, month, day]: number[] = [+dateSplited[0], +dateSplited[1], +dateSplited[2]];
         if (isValidMonth(month) && isValidDay(year, month, day)) {
@@ -71,31 +72,33 @@ const splitDate = (stringDate: string): number[] => {
     }
 
     return [];
-}
+};
 
 const isInRange = (n: number, rangeBeginning: number, rangeEnding: number, includeEnding: boolean = true): boolean => {
     return includeEnding ? rangeBeginning <= n && n <= rangeEnding : rangeBeginning <= n && n < rangeEnding;
-}
+};
 
-const isMonthDayInPeriodWithSameYear = ([monthInput, dayInput]: number[], [monthBegin, dayBegin]: number[], [monthEnd, dayEnd]: number[]): boolean => {
+const isMonthDayInPeriodWithSameYear = ([monthInput, dayInput]: number[], [monthBegin, dayBegin]: number[],
+        [monthEnd, dayEnd]: number[]): boolean => {
     if (monthInput === monthBegin && monthBegin === monthEnd) {
         return isInRange(dayInput, dayBegin, dayEnd, false);
-    } else if (monthInput === monthBegin){
+    } else if (monthInput === monthBegin) {
         return dayInput >= dayBegin;
-    } else if (monthInput === monthEnd){
+    } else if (monthInput === monthEnd) {
         return dayInput < dayEnd;
     } else {
         return isInRange(monthInput, monthBegin, monthEnd);
     }
-}
+};
 
-const isMonthDayInPeriodYearBeggining = ([monthInput, dayInput]: number[], [monthBegin, dayBegin]: number[]): boolean => {
+const isMonthDayInPeriodYearBeggining = ([monthInput, dayInput]: number[],
+        [monthBegin, dayBegin]: number[]): boolean => {
     if (monthInput === monthBegin) {
         return dayInput >= dayBegin;
     } else {
         return monthInput > monthBegin;
     }
-}
+};
 
 const isMonthDayInPeriodYearEnding = ([monthInput, dayInput]: number[], [monthEnd, dayEnd]: number[]): boolean => {
     if (monthInput === monthEnd) {
@@ -103,17 +106,18 @@ const isMonthDayInPeriodYearEnding = ([monthInput, dayInput]: number[], [monthEn
     } else {
         return monthInput < monthEnd;
     }
-}
+};
 
-const isAValidPeriod = ([yearBegin, monthBegin, dayBegin]: number[], [yearEnd, monthEnd, dayEnd]: number[]): boolean => {
+const isAValidPeriod = ([yearBegin, monthBegin, dayBegin]: number[],
+        [yearEnd, monthEnd, dayEnd]: number[]): boolean => {
     if (yearBegin !== yearEnd) {
         return yearBegin < yearEnd;
-    } else if (monthBegin !== monthEnd){
+    } else if (monthBegin !== monthEnd) {
         return monthBegin < monthEnd;
     } else {
         return dayBegin < dayEnd;
     }
-}
+};
 
 /**
  * Check if dateInput is between dateBeginning and dateEnding (dateBeginning <= dateInput < dateEnding).
@@ -131,7 +135,7 @@ const isDateInPeriod = (dateInput: string, dateBeginningSplit: number[], dateEnd
     const [yearInput, monthInput, dayInput] = dateInputSplit;
     const [yearBegin, monthBegin, dayBegin] = dateBeginningSplit;
     const [yearEnd, monthEnd, dayEnd] = dateEndingSplit;
-    
+
     if (yearInput === yearBegin && yearBegin === yearEnd) {
         return isMonthDayInPeriodWithSameYear([monthInput, dayInput], [monthBegin, dayBegin], [monthEnd, dayEnd]);
     } else if (yearInput === yearBegin) {
@@ -141,7 +145,7 @@ const isDateInPeriod = (dateInput: string, dateBeginningSplit: number[], dateEnd
     } else {
         return isInRange(yearInput, yearBegin, yearEnd);
     }
-}
+};
 
 export const VALIDATION_TYPE = 'DATE_IN_PERIOD';
 
@@ -151,7 +155,8 @@ export const VALIDATION_TYPE = 'DATE_IN_PERIOD';
  * @param dateBeginning date (with format Year-Month-Day or Year/Month/Day) initial of the period.
  * @param dateEnding date (with format Year-Month-Day or Year/Month/Day) ending of the period.
  */
-export const validateDateInPeriod = (dateInput: string, dateBeginning: string, dateEnding: string): FieldValidationResult => {
+export const validateDateInPeriod = (dateInput: string, dateBeginning: string,
+        dateEnding: string): FieldValidationResult => {
     const result = new FieldValidationResult();
     const dateBeginningSplit: number[] = splitDate(dateBeginning);
     const dateEndingSplit: number[] = splitDate(dateEnding);
@@ -171,5 +176,4 @@ export const validateDateInPeriod = (dateInput: string, dateBeginning: string, d
     result.errorMessage = valid ? '' : invalidMessage;
 
     return result;
-
-}
+};
