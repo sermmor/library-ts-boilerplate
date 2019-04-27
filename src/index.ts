@@ -1,1 +1,1 @@
-export { validateDateInPeriod } from './date-in-period';
+export { validateDateInPeriod, VALIDATION_TYPE } from './date-in-period';

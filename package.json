@@ -1,6 +1,6 @@
 {
   "name": "validator-date-in-period",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Microlibrary for validate 1 date between 2 dates (using lc-form-validation library)",
   "keywords": [
     "lc-form-validation",
